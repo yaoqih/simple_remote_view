@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screen Stream</title>
+</head>
+<body>
+    <img id="screenshot" src="/video_feed" alt="Screen Image" style="width:100%;" onclick="sendClick(event)">
+    <script>
+        function sendClick(event) {
+            var img = document.getElementById('screenshot');
+            var rect = img.getBoundingClientRect();
+            var x = (event.clientX - rect.left) / rect.width;
+            var y = (event.clientY - rect.top) / rect.height;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/click", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("x=" + x + "&y=" + y);
+        }
+
+        document.addEventListener('keydown', function(event) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/key_press", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("key=" + event.key);
+        });
+
+        document.addEventListener('keyup', function(event) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/key_release", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send("key=" + event.key);
+        });
+    </script>
+</body>
+</html>
