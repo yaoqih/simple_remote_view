@@ -6,9 +6,9 @@
     <title>Screen Stream</title>
 </head>
 <body>
-    <img id="screenshot" src="/video_feed" alt="Screen Image" style="width:100%;" onclick="sendClick(event)">
+    {{video_tag|safe}}
     <script>
-        function sendClick(event) {
+        function sendClick(event,monitor_id=1) {
             var img = document.getElementById('screenshot');
             var rect = img.getBoundingClientRect();
             var x = (event.clientX - rect.left) / rect.width;
@@ -16,7 +16,7 @@
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "/click", true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.send("x=" + x + "&y=" + y);
+            xhr.send("x=" + x + "&y=" + y+ "&monitor_id=" + monitor_id);
         }
 
         document.addEventListener('keydown', function(event) {
